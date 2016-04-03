@@ -99,8 +99,7 @@ void add_sphere( struct matrix * points,
   
   for ( lat = latStart; lat < latStop; lat++ ) {
     if (index % num_steps == (num_steps - 1)) {
-      
-      for ( longt = longStart; longStop < 1; longt++ ) { // 1 is longStop
+      for ( longt = longStart; longt < longStop; longt++ ) { // 1 is longStop
 	//      index = lat * (num_steps+1) + longt;
 	if (index % num_steps == (num_steps - 1)) {
 	  add_polygon( points,
@@ -110,20 +109,20 @@ void add_sphere( struct matrix * points,
 		       temp->m[0][(index % num_steps)],
 		       temp->m[1][(index % num_steps)],
 		       temp->m[2][(index % num_steps)],
-		       temp->m[0][(index % num_steps) + 1],
-		       temp->m[1][(index % num_steps) + 1],
-		       temp->m[2][(index % num_steps) + 1]
+		       temp->m[0][0],
+		       temp->m[1][0],
+		       temp->m[2][0]
 		       );
 	  add_polygon( points,
 		       temp->m[0][index],
 		       temp->m[1][index],
 		       temp->m[2][index],
-		       temp->m[0][(index % num_steps) + 1],
-		       temp->m[1][(index % num_steps) + 1],
-		       temp->m[2][(index % num_steps) + 1],
-		       temp->m[0][index + 1],
-		       temp->m[1][index + 1],
-		       temp->m[2][index + 1]
+		       temp->m[0][0],
+		       temp->m[1][0],
+		       temp->m[2][0],
+		       temp->m[0][index - (num_steps - 1)],
+		       temp->m[1][index - (num_steps - 1)],
+		       temp->m[2][index - (num_steps - 1)]
 		       );
 	}
 	else {
@@ -307,10 +306,11 @@ void add_torus( struct matrix * points,
   longStop = num_steps;
   index = 0;
 
-  for ( lat = latStart; lat < latStop; lat++ ) {
-    if (index % num_steps == (num_steps - 1)) {
-      
-      for ( longt = longStart; longStop < 1; longt++ ) { // 1 is longStop
+  int tmp = 0;
+
+ for ( lat = latStart; lat < latStop; lat++ ) {
+    if (tmp == (num_steps - 1)) {
+      for ( longt = longStart; longt < longStop; longt++ ) { // 1 is longStop
 	//      index = lat * (num_steps+1) + longt;
 	if (index % num_steps == (num_steps - 1)) {
 	  add_polygon( points,
@@ -320,20 +320,20 @@ void add_torus( struct matrix * points,
 		       temp->m[0][(index % num_steps)],
 		       temp->m[1][(index % num_steps)],
 		       temp->m[2][(index % num_steps)],
-		       temp->m[0][(index % num_steps) + 1],
-		       temp->m[1][(index % num_steps) + 1],
-		       temp->m[2][(index % num_steps) + 1]
+		       temp->m[0][0],
+		       temp->m[1][0],
+		       temp->m[2][0]
 		       );
 	  add_polygon( points,
 		       temp->m[0][index],
 		       temp->m[1][index],
 		       temp->m[2][index],
-		       temp->m[0][(index % num_steps) + 1],
-		       temp->m[1][(index % num_steps) + 1],
-		       temp->m[2][(index % num_steps) + 1],
-		       temp->m[0][index + 1],
-		       temp->m[1][index + 1],
-		       temp->m[2][index + 1]
+		       temp->m[0][0],
+		       temp->m[1][0],
+		       temp->m[2][0],
+		       temp->m[0][index - (num_steps - 1)],
+		       temp->m[1][index - (num_steps - 1)],
+		       temp->m[2][index - (num_steps - 1)]
 		       );
 	}
 	else {
@@ -362,9 +362,8 @@ void add_torus( struct matrix * points,
 	}
 	index += 1;
       }
-
     }
-    else{
+    else {
       for ( longt = longStart; longt < longStop; longt++ ) { // 1 is longStop
 	//      index = lat * (num_steps+1) + longt;
 	if (index % num_steps == (num_steps - 1)) {
@@ -375,20 +374,20 @@ void add_torus( struct matrix * points,
 		       temp->m[0][index + num_steps],
 		       temp->m[1][index + num_steps],
 		       temp->m[2][index + num_steps],
-		       temp->m[0][index + num_steps + 1],
-		       temp->m[1][index + num_steps + 1],
-		       temp->m[2][index + num_steps + 1]
+		       temp->m[0][index + 1],
+		       temp->m[1][index + 1],
+		       temp->m[2][index + 1]
 		       );
 	  add_polygon( points,
 		       temp->m[0][index],
 		       temp->m[1][index],
 		       temp->m[2][index],
-		       temp->m[0][index + num_steps + 1],
-		       temp->m[1][index + num_steps + 1],
-		       temp->m[2][index + num_steps + 1],
 		       temp->m[0][index + 1],
 		       temp->m[1][index + 1],
-		       temp->m[2][index + 1]
+		       temp->m[2][index + 1],
+		       temp->m[0][index - (num_steps - 1)],
+		       temp->m[1][index - (num_steps - 1)],
+		       temp->m[2][index - (num_steps - 1)]
 		       );
 	}
 	else {
@@ -418,7 +417,9 @@ void add_torus( struct matrix * points,
 	index += 1;
       }
     }
-  }
+    tmp += 1;
+ }
+
   
   /*      index = lat * num_steps + longt;
 	  
