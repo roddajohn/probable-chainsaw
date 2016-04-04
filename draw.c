@@ -97,7 +97,7 @@ void add_sphere( struct matrix * points,
   longStop = num_steps;
   index = 0;
   
-  for ( lat = latStart; lat < latStop; lat++ ) {
+  for ( lat = latStop - 2; lat < latStop; lat++ ) {
     if (index % num_steps == (num_steps - 1)) {
       for ( longt = longStart; longt < longStop; longt++ ) { // 1 is longStop
 	//      index = lat * (num_steps+1) + longt;
