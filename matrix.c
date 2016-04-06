@@ -86,6 +86,14 @@ void print_matrix(struct matrix *m) {
   }
 }
 
+void print_points(struct matrix *m) {
+  int i, j;
+
+  for (i = 0; i < m->cols; i++) {
+    printf("%f, %f, %f\n", m->m[0][i], m->m[1][i], m->m[2][i]);
+  }
+}
+
 /*-------------- void ident() --------------
 Inputs:  struct matrix *m <-- assumes m is a square matrix
 Returns: 

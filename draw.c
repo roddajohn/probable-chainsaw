@@ -96,9 +96,15 @@ void add_sphere( struct matrix * points,
   longStart = 0;
   longStop = num_steps;
   index = 0;
+
+  /*print_points(temp);
+
+  printf("\n\n\n\n\n\n\n\n");
+  */
+  int tmp = 0;
   
-  for ( lat = latStop - 2; lat < latStop; lat++ ) {
-    if (index % num_steps == (num_steps - 1)) {
+  for ( lat = latStart; lat < latStop; lat++ ) {
+    if (tmp == (num_steps - 1)) {
       for ( longt = longStart; longt < longStop; longt++ ) { // 1 is longStop
 	//      index = lat * (num_steps+1) + longt;
 	if (index % num_steps == (num_steps - 1)) {
@@ -106,9 +112,9 @@ void add_sphere( struct matrix * points,
 		       temp->m[0][index],
 		       temp->m[1][index],
 		       temp->m[2][index],
-		       temp->m[0][(index % num_steps)],
-		       temp->m[1][(index % num_steps)],
-		       temp->m[2][(index % num_steps)],
+		       temp->m[0][index % num_steps],
+		       temp->m[1][index % num_steps],
+		       temp->m[2][index % num_steps],
 		       temp->m[0][0],
 		       temp->m[1][0],
 		       temp->m[2][0]
@@ -152,11 +158,18 @@ void add_sphere( struct matrix * points,
 	index += 1;
       }
 
-    }
+   }
     else{
       for ( longt = longStart; longt < longStop; longt++ ) { // 1 is longStop
+	//	printf("index: %d\n", index);
 	//      index = lat * (num_steps+1) + longt;
 	if (index % num_steps == (num_steps - 1)) {
+	  /*	  printf("Special case\n");
+	  printf("connection indices: %f, %f, %f\n", index, index + num_steps, index + 1);
+	  printf("connection indices: %f, %f, %f\n", index, index + 1, index - (num_steps - 1));
+	  printf("index point: %f, %f, %f\n", temp->m[0][index] , temp->m[1][index], temp->m[2][index]);
+	  printf("index + num_steps point, %f, %f, %f\n", temp->m[0][index + num_steps], temp->m[1][index + num_steps], temp->m[2][index + num_steps]);
+	  printf("NEXT\n");*/
 	  add_polygon( points,
 		       temp->m[0][index],
 		       temp->m[1][index],
@@ -164,23 +177,28 @@ void add_sphere( struct matrix * points,
 		       temp->m[0][index + num_steps],
 		       temp->m[1][index + num_steps],
 		       temp->m[2][index + num_steps],
-		       temp->m[0][index + num_steps + 1],
-		       temp->m[1][index + num_steps + 1],
-		       temp->m[2][index + num_steps + 1]
+		       temp->m[0][index + 1],
+		       temp->m[1][index + 1],
+		       temp->m[2][index + 1]
 		       );
 	  add_polygon( points,
 		       temp->m[0][index],
 		       temp->m[1][index],
 		       temp->m[2][index],
-		       temp->m[0][index + num_steps + 1],
-		       temp->m[1][index + num_steps + 1],
-		       temp->m[2][index + num_steps + 1],
 		       temp->m[0][index + 1],
 		       temp->m[1][index + 1],
-		       temp->m[2][index + 1]
+		       temp->m[2][index + 1],
+		       temp->m[0][index - (num_steps - 1)],
+		       temp->m[1][index - (num_steps - 1)],
+		       temp->m[2][index - (num_steps - 1)]
 		       );
 	}
 	else {
+	  /*	  printf("index point: %f, %f, %f\n", temp->m[0][index], temp->m[1][index], temp->m[2][index]);
+	  printf("index + num_steps point, %f, %f, %f\n", temp->m[0][index + num_steps], temp->m[1][index + num_steps], temp->m[2][index + num_steps]);
+	  printf("connection indices: %f, %f, %f\n", index, index + num_steps, index + num_steps + 1);
+	  printf("connection indices: %f, %f, %f\n", index, index + num_steps + 1, index + 1);*/
+	  //	  printf("NEXT\n");
 	  add_polygon( points,
 		       temp->m[0][index],
 		       temp->m[1][index],
@@ -207,6 +225,7 @@ void add_sphere( struct matrix * points,
 	index += 1;
       }
     }
+    tmp += 1;
   }
       
       /*      add_edge( points,
@@ -218,6 +237,9 @@ void add_sphere( struct matrix * points,
 	      temp->m[2][index] );
       */
   //end points only
+
+  /*  printf("\n\n\n\n");
+      print_matrix(points);*/
 
   free_matrix(temp);
 }
@@ -256,10 +278,8 @@ void generate_sphere( struct matrix * points,
 
       circ = (double)circle / MAX_STEPS;
       x = r * cos( 2 * M_PI * circ ) + cx;
-      y = r * sin( 2 * M_PI * circ ) *
-	cos( 2 * M_PI * rot ) + cy;
-      z = r * sin( 2 * M_PI * circ ) *
-	sin( 2 * M_PI * rot );
+      y = r * sin( 2 * M_PI * circ ) * cos( 2 * M_PI * rot ) + cy;
+      z = r * sin( 2 * M_PI * circ ) * sin( 2 * M_PI * rot );
 
       add_point( points, x, y, z);
     }
