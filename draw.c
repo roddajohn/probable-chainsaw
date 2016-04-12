@@ -50,12 +50,44 @@ jdyrlandweaver
 ====================*/
 void draw_polygons( struct matrix *polygons, screen s, color c ) {
   int i;
-  for (i = 0; i < polygons->lastcol; i += 3) { // Possible seg fault
-    draw_line(polygons->m[0][i], polygons->m[1][i], polygons->m[0][i + 1], polygons->m[1][i + 1], s, c);
-    draw_line(polygons->m[0][i + 1], polygons->m[1][i + 1], polygons->m[0][i + 2], polygons->m[1][i + 2], s, c);
-    draw_line(polygons->m[0][i + 2], polygons->m[1][i + 2], polygons->m[0][i], polygons->m[1][i], s, c);
+  
+  double vx = 0;
+  double vy = 0;
+  double vz = -1;
+
+  double ax, ay, az, bx, by, bz, nx, ny, nz;
+  
+  //  for (i = 0; i < polygons->lastcol; i += 3) { // Possible seg fault
+  for (i=0;i<polygons->lastcol-2;i+=3){
+    ax = polygons->m[0][i+1] - polygons->m[0][i];
+    ay = polygons->m[1][i+1] - polygons->m[1][i];
+    az = polygons->m[2][i+1] - polygons->m[2][i];
+    bx = polygons->m[0][i+2] - polygons->m[0][i];
+    by = polygons->m[1][i+2] - polygons->m[1][i];
+    bz = polygons->m[2][i+2] - polygons->m[2][i];
+    nx = ay * bz - az * by;
+    ny = az * bx - ax * bz;
+    nz = ax * by - ay * bx;
+    
+    if ((nx * vx + ny * vy + nz * vz)<0){ 
+      draw_line(polygons->m[0][i],polygons->m[1][i], 
+		polygons->m[0][i+1],polygons->m[1][i+1],
+		s,c);
+      draw_line(polygons->m[0][i+1],polygons->m[1][i+1], 
+		polygons->m[0][i+2],polygons->m[1][i+2],
+		s,c);
+      draw_line(polygons->m[0][i+2],polygons->m[1][i+2], 
+		polygons->m[0][i],polygons->m[1][i],
+		s,c);
+    }
+    
+    /*	draw_line(polygons->m[0][i], polygons->m[1][i], polygons->m[0][i + 1], polygons->m[1][i + 1], s, c);
+	draw_line(polygons->m[0][i + 1], polygons->m[1][i + 1], polygons->m[0][i + 2], polygons->m[1][i + 2], s, c);
+	draw_line(polygons->m[0][i + 2], polygons->m[1][i + 2], polygons->m[0][i], polygons->m[1][i], s, c);*/
   }
 }
+
+
 
 
 /*======== void add_sphere() ==========
