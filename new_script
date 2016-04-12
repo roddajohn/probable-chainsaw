@@ -1,0 +1,18 @@
+box
+100 100 100 200 100 400
+sphere
+200 200 100
+torus
+200 400 30 50
+ident
+xrotate
+90
+apply
+ident
+translate
+0 200 0
+apply
+save
+something.png
+display
+quit
